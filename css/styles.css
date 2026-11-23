@@ -1,0 +1,335 @@
+/* ==========================================
+   01. RESET Y BASE MÓVIL
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  user-select: none;
+}
+
+/* ==========================================
+   02. LIENZO PRINCIPAL Y FONDO INFINITO
+   ========================================== */
+#board {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #34495e;
+  background-image:
+    radial-gradient(circle at center, rgba(148, 163, 184, 0.35) 1.5px, transparent 2.5px),
+    radial-gradient(circle at center, rgba(205, 213, 224, 0) 1px, transparent 1px);
+  background-size: 32px 32px, 16px 16px;
+  background-position: 0 0, 8px 8px;
+  animation: moverPizarra 24s linear infinite;
+}
+
+@keyframes moverPizarra {
+  0% {
+    background-position: 0 0, 8px 8px;
+  }
+  100% {
+    background-position: 160px 160px, 168px 168px;
+  }
+}
+
+.hidden-board {
+  display: none !important;
+}
+
+/* ==========================================
+   03. NOTAS POST-IT
+   ========================================== */
+.postit {
+  position: absolute;
+  width: 160px;
+  min-height: 160px;
+  padding: 14px;
+  border-radius: 4px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14), 0 2px 4px rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+  font-size: 15px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  touch-action: none;
+  cursor: grab;
+  z-index: 10;
+}
+
+.postit:active {
+  cursor: grabbing;
+  z-index: 20;
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.2);
+}
+
+.postit.resetting {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ==========================================
+   04. BOTÓN FLOTANTE (FAB) Y CERRAR SESIÓN
+   ========================================== */
+#fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 30px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+  cursor: pointer;
+  z-index: 500;
+  transition: transform 0.15s ease, background-color 0.2s ease;
+}
+
+#fab:hover {
+  background-color: #1d4ed8;
+}
+
+#fab:active {
+  transform: scale(0.94);
+}
+
+#fab.hidden {
+  display: none !important;
+}
+
+.btn-logout {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #d0d7de;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-logout:hover {
+  background-color: #f3f4f6;
+}
+
+.btn-logout:active {
+  transform: scale(0.97);
+}
+
+.btn-logout.hidden {
+  display: none !important;
+}
+
+/* ==========================================
+   05. PANTALLA DE INICIO DE SESIÓN
+   ========================================== */
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 14px;
+  text-align: center;
+  width: 90%;
+  max-width: 380px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+}
+
+.login-card h2 {
+  margin-bottom: 10px;
+  color: #111827;
+  font-size: 22px;
+}
+
+.login-card p {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.btn-google {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-google:hover {
+  background: #f9fafb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================
+   06. MODALES Y SELECTOR DE COLOR
+   ========================================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 2000;
+}
+
+.modal.hidden {
+  display: none !important;
+}
+
+.modal-content {
+  background: #ffffff;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-content h3 {
+  font-size: 18px;
+  color: #111827;
+}
+
+.modal-content p {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+#note-text {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+}
+
+#note-text:focus {
+  border-color: #2563eb;
+}
+
+.color-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.color-picker label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.color-options {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.color-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.color-btn.selected {
+  border-color: #111827;
+  transform: scale(1.15);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.modal-actions button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-secondary {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.btn-secondary:hover {
+  background-color: #d1d5db;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
